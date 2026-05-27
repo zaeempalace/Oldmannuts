@@ -1,0 +1,42 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-silkscreen: "Silkscreen", "Inter", monospace;
+
+  /* Custom Stake.com & Old Man Nuts brand colors */
+  --color-obsidian: #212121;
+  --color-obsidian-dark: #161616;
+  --color-obsidian-light: #2c2c2c;
+  --color-papaya: #F7AA38;
+  --color-chalk: #F0F0F0;
+  --color-marsala: #943A3A;
+  
+  --color-text-primary: #F0F0F0;
+  --color-text-secondary: #9F9F9F;
+}
+
+@layer base {
+  body {
+    background-color: var(--color-obsidian-dark);
+    color: var(--color-chalk);
+    font-family: var(--font-sans);
+  }
+}
+
+/* Custom scrollbar matching premium dark casinos */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-obsidian-dark);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-obsidian-light);
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-papaya);
+}
