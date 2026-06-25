@@ -1,6 +1,0 @@
-{
-  "name": "Old Man Nuts",
-  "description": "The official community and rewards hub for OldManNuts.com. Tournaments, raffles, promotions, and the ultimate bi-weekly wager leaderboard.",
-  "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
-}
