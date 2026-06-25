@@ -97,6 +97,13 @@ Set the key (or add it in **Site settings → Environment variables**):
 netlify env:set GEMINI_API_KEY your_key_here
 ```
 
+## Runtime & region (Vercel)
+
+`vercel.json` pins the function to the **`iad1`** region (US East — lowest
+latency to NYC residents and to Google's API) and allows up to a 30-second
+execution window. The Node version is pinned to **20.x** via `engines` in
+`package.json`. Edit `regions` in `vercel.json` to deploy elsewhere.
+
 ## Configuration notes
 
 - **Model:** the function uses `gemini-2.5-flash`. To switch, change the
