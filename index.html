@@ -3,11 +3,623 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
+    <meta name="color-scheme" content="light" />
+    <meta
+      name="description"
+      content="Francine Realty Resident Assistant — help with rent, maintenance requests, lease questions, and reaching the office."
+    />
+    <title>Francine Realty · Resident Assistant</title>
+    <style>
+      :root {
+        --paper: #f4efe6;
+        --surface: #ffffff;
+        --surface-warm: #fbf8f2;
+        --ink: #1a1f1c;
+        --green: #1f3a2e;
+        --brass: #a8823e;
+        --muted: #6e665a;
+        --border: #e5ddcd;
+        --radius: 16px;
+        --shadow: 0 18px 50px -24px rgba(26, 31, 28, 0.45);
+        --sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+          Arial, sans-serif;
+        --serif: Georgia, "Times New Roman", serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: var(--sans);
+        color: var(--ink);
+        background: var(--paper);
+        background-image: radial-gradient(
+            1200px 600px at 50% -10%,
+            rgba(31, 58, 46, 0.06),
+            transparent 60%
+          );
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        -webkit-font-smoothing: antialiased;
+        text-rendering: optimizeLegibility;
+      }
+
+      .card {
+        width: 100%;
+        max-width: 560px;
+        height: min(82vh, 760px);
+        background: var(--surface);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        box-shadow: var(--shadow);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* Header */
+      .header {
+        background: var(--green);
+        color: #f4efe6;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .badge {
+        flex: 0 0 auto;
+        width: 40px;
+        height: 40px;
+        border-radius: 10px;
+        background: var(--brass);
+        color: #1a1f1c;
+        font-family: var(--serif);
+        font-weight: 700;
+        font-size: 17px;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.18);
+      }
+
+      .header-text {
+        display: flex;
+        flex-direction: column;
+        line-height: 1.2;
+        min-width: 0;
+      }
+
+      .wordmark {
+        font-family: var(--serif);
+        font-size: 18px;
+        font-weight: 700;
+        letter-spacing: 0.2px;
+      }
+
+      .subtitle {
+        font-size: 12.5px;
+        color: rgba(244, 239, 230, 0.78);
+      }
+
+      .status {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 12px;
+        color: rgba(244, 239, 230, 0.85);
+      }
+
+      .dot {
+        width: 9px;
+        height: 9px;
+        border-radius: 50%;
+        background: #5fbf76;
+        box-shadow: 0 0 0 0 rgba(95, 191, 118, 0.6);
+        animation: pulse 2.4s infinite;
+      }
+
+      @keyframes pulse {
+        0% {
+          box-shadow: 0 0 0 0 rgba(95, 191, 118, 0.55);
+        }
+        70% {
+          box-shadow: 0 0 0 7px rgba(95, 191, 118, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(95, 191, 118, 0);
+        }
+      }
+
+      /* Messages */
+      .messages {
+        flex: 1 1 auto;
+        overflow-y: auto;
+        padding: 18px;
+        background: var(--surface-warm);
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        scroll-behavior: smooth;
+      }
+
+      .row {
+        display: flex;
+        width: 100%;
+      }
+
+      .row.user {
+        justify-content: flex-end;
+      }
+
+      .row.model {
+        justify-content: flex-start;
+      }
+
+      .bubble {
+        max-width: 82%;
+        padding: 10px 13px;
+        border-radius: 14px;
+        font-size: 14.5px;
+        line-height: 1.5;
+        white-space: pre-wrap;
+        word-wrap: break-word;
+        overflow-wrap: anywhere;
+      }
+
+      .row.model .bubble {
+        background: var(--surface);
+        border: 1px solid var(--border);
+        color: var(--ink);
+        border-top-left-radius: 4px;
+      }
+
+      .row.user .bubble {
+        background: var(--green);
+        color: #f4efe6;
+        border-top-right-radius: 4px;
+      }
+
+      /* Quick replies */
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 2px 2px 4px;
+      }
+
+      .chip {
+        border: 1px solid var(--border);
+        background: var(--surface);
+        color: var(--green);
+        font-family: var(--sans);
+        font-size: 13px;
+        font-weight: 600;
+        padding: 8px 12px;
+        border-radius: 999px;
+        cursor: pointer;
+        transition: background 0.15s ease, border-color 0.15s ease,
+          transform 0.05s ease;
+      }
+
+      .chip:hover {
+        background: #f1ece1;
+        border-color: var(--brass);
+      }
+
+      .chip:active {
+        transform: translateY(1px);
+      }
+
+      /* Typing indicator */
+      .typing {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 12px 14px;
+      }
+
+      .typing span {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--muted);
+        opacity: 0.5;
+        animation: bounce 1.3s infinite ease-in-out;
+      }
+
+      .typing span:nth-child(2) {
+        animation-delay: 0.18s;
+      }
+      .typing span:nth-child(3) {
+        animation-delay: 0.36s;
+      }
+
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        40% {
+          transform: translateY(-5px);
+          opacity: 0.9;
+        }
+      }
+
+      .error-note {
+        color: #8a2b2b;
+        background: #fbecec;
+        border: 1px solid #efcfcf;
+      }
+
+      /* Composer */
+      .composer {
+        border-top: 1px solid var(--border);
+        background: var(--surface);
+        padding: 12px;
+        display: flex;
+        gap: 10px;
+        align-items: flex-end;
+      }
+
+      textarea {
+        flex: 1 1 auto;
+        resize: none;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 11px 12px;
+        font-family: var(--sans);
+        font-size: 14.5px;
+        line-height: 1.4;
+        color: var(--ink);
+        background: var(--surface-warm);
+        max-height: 120px;
+        outline: none;
+        transition: border-color 0.15s ease, box-shadow 0.15s ease;
+      }
+
+      textarea::placeholder {
+        color: var(--muted);
+      }
+
+      textarea:focus-visible {
+        border-color: var(--brass);
+        box-shadow: 0 0 0 3px rgba(168, 130, 62, 0.18);
+      }
+
+      .send {
+        flex: 0 0 auto;
+        border: none;
+        background: var(--green);
+        color: #f4efe6;
+        font-family: var(--sans);
+        font-size: 14px;
+        font-weight: 600;
+        padding: 0 18px;
+        height: 44px;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: background 0.15s ease, opacity 0.15s ease;
+      }
+
+      .send:hover:not(:disabled) {
+        background: #25452f;
+      }
+
+      .send:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(168, 130, 62, 0.35);
+      }
+
+      .send:disabled {
+        opacity: 0.45;
+        cursor: not-allowed;
+      }
+
+      /* Footer */
+      .footer {
+        background: var(--surface);
+        border-top: 1px solid var(--border);
+        padding: 8px 14px 12px;
+        text-align: center;
+      }
+
+      .footer .line {
+        font-size: 11.5px;
+        color: var(--muted);
+      }
+
+      .footer .disclaimer {
+        font-size: 10.5px;
+        color: var(--muted);
+        opacity: 0.85;
+        margin-top: 2px;
+      }
+
+      /* Scrollbar */
+      .messages::-webkit-scrollbar {
+        width: 8px;
+      }
+      .messages::-webkit-scrollbar-thumb {
+        background: #e0d8c8;
+        border-radius: 8px;
+      }
+
+      @media (max-width: 600px) {
+        body {
+          padding: 0;
+        }
+        .card {
+          height: 100vh;
+          height: 100dvh;
+          max-width: 100%;
+          border-radius: 0;
+          border: none;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.001ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.001ms !important;
+          scroll-behavior: auto !important;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <main class="card" role="main">
+      <header class="header">
+        <div class="badge" aria-hidden="true">FR</div>
+        <div class="header-text">
+          <span class="wordmark">Francine Realty</span>
+          <span class="subtitle">Resident Assistant</span>
+        </div>
+        <div class="status">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Online</span>
+        </div>
+      </header>
+
+      <div
+        class="messages"
+        id="messages"
+        role="log"
+        aria-live="polite"
+        aria-label="Conversation with the Resident Assistant"
+      ></div>
+
+      <form class="composer" id="composer">
+        <textarea
+          id="input"
+          rows="1"
+          placeholder="Type your message…"
+          aria-label="Message"
+          autocomplete="off"
+        ></textarea>
+        <button type="submit" class="send" id="send" disabled>Send</button>
+      </form>
+
+      <footer class="footer">
+        <div class="line">
+          Office: 718-833-8712 · Mon–Fri 9–5 ET · For emergencies call 911
+        </div>
+        <div class="disclaimer">
+          Responses are AI-generated and may not be accurate. Confirm important
+          details with the office.
+        </div>
+      </footer>
+    </main>
+
+    <script>
+      (function () {
+        "use strict";
+
+        var ENDPOINT = "/api/chat";
+        var GREETING =
+          "Hi, welcome to Francine Realty. I'm the Resident Assistant — I can help with rent, maintenance requests, lease questions, and reaching the office. What can I help you with today?";
+        var QUICK_REPLIES = [
+          "Pay rent",
+          "Report a repair",
+          "No heat or hot water",
+          "Lease question",
+          "Reach the office",
+        ];
+        var ERROR_TEXT =
+          "Sorry, I'm having trouble connecting right now. Please try again in a moment, or call the office at 718-833-8712 (Mon–Fri, 9–5 ET).";
+
+        // Conversation history sent with every request. Roles: "user" | "model".
+        // The greeting is display-only and is NOT part of the model history.
+        var history = [];
+
+        var messagesEl = document.getElementById("messages");
+        var formEl = document.getElementById("composer");
+        var inputEl = document.getElementById("input");
+        var sendEl = document.getElementById("send");
+
+        var chipsShown = false;
+        var loading = false;
+
+        function scrollToBottom() {
+          messagesEl.scrollTop = messagesEl.scrollHeight;
+        }
+
+        function addBubble(role, text) {
+          var row = document.createElement("div");
+          row.className = "row " + role;
+          var bubble = document.createElement("div");
+          bubble.className = "bubble";
+          bubble.textContent = text;
+          row.appendChild(bubble);
+          messagesEl.appendChild(row);
+          scrollToBottom();
+          return row;
+        }
+
+        function addErrorBubble(text) {
+          var row = document.createElement("div");
+          row.className = "row model";
+          var bubble = document.createElement("div");
+          bubble.className = "bubble error-note";
+          bubble.textContent = text;
+          row.appendChild(bubble);
+          messagesEl.appendChild(row);
+          scrollToBottom();
+        }
+
+        function showChips() {
+          if (chipsShown) return;
+          chipsShown = true;
+          var wrap = document.createElement("div");
+          wrap.className = "chips";
+          wrap.id = "chips";
+          QUICK_REPLIES.forEach(function (label) {
+            var btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "chip";
+            btn.textContent = label;
+            btn.addEventListener("click", function () {
+              send(label);
+            });
+            wrap.appendChild(btn);
+          });
+          messagesEl.appendChild(wrap);
+          scrollToBottom();
+        }
+
+        function hideChips() {
+          var chips = document.getElementById("chips");
+          if (chips && chips.parentNode) {
+            chips.parentNode.removeChild(chips);
+          }
+        }
+
+        function showTyping() {
+          var row = document.createElement("div");
+          row.className = "row model";
+          row.id = "typing-row";
+          var bubble = document.createElement("div");
+          bubble.className = "bubble";
+          var typing = document.createElement("div");
+          typing.className = "typing";
+          typing.setAttribute("aria-label", "Assistant is typing");
+          typing.innerHTML = "<span></span><span></span><span></span>";
+          bubble.appendChild(typing);
+          row.appendChild(bubble);
+          messagesEl.appendChild(row);
+          scrollToBottom();
+        }
+
+        function hideTyping() {
+          var row = document.getElementById("typing-row");
+          if (row && row.parentNode) {
+            row.parentNode.removeChild(row);
+          }
+        }
+
+        function autosize() {
+          inputEl.style.height = "auto";
+          inputEl.style.height = Math.min(inputEl.scrollHeight, 120) + "px";
+        }
+
+        function refreshSendState() {
+          sendEl.disabled = loading || inputEl.value.trim().length === 0;
+        }
+
+        function setLoading(state) {
+          loading = state;
+          inputEl.disabled = state;
+          refreshSendState();
+          if (!state) {
+            inputEl.focus();
+          }
+        }
+
+        async function send(text) {
+          var trimmed = (text || "").trim();
+          if (!trimmed || loading) return;
+
+          hideChips();
+          addBubble("user", trimmed);
+          history.push({ role: "user", text: trimmed });
+
+          inputEl.value = "";
+          autosize();
+          setLoading(true);
+          showTyping();
+
+          try {
+            var res = await fetch(ENDPOINT, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ messages: history }),
+            });
+
+            hideTyping();
+
+            if (!res.ok) {
+              throw new Error("Request failed with status " + res.status);
+            }
+
+            var data = await res.json();
+            var reply = data && data.reply ? String(data.reply).trim() : "";
+            if (!reply) {
+              throw new Error("Empty reply");
+            }
+
+            history.push({ role: "model", text: reply });
+            addBubble("model", reply);
+          } catch (err) {
+            hideTyping();
+            addErrorBubble(ERROR_TEXT);
+          } finally {
+            setLoading(false);
+          }
+        }
+
+        // Events
+        formEl.addEventListener("submit", function (e) {
+          e.preventDefault();
+          send(inputEl.value);
+        });
+
+        inputEl.addEventListener("input", function () {
+          autosize();
+          refreshSendState();
+        });
+
+        inputEl.addEventListener("keydown", function (e) {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            if (!sendEl.disabled) {
+              send(inputEl.value);
+            }
+          }
+        });
+
+        // Initial render
+        addBubble("model", GREETING);
+        showChips();
+        refreshSendState();
+        inputEl.focus();
+      })();
+    </script>
   </body>
 </html>
-

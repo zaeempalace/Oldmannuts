@@ -1,0 +1,13 @@
+# Netlify configuration for the Francine Realty Resident Assistant.
+# Static site (index.html) + one serverless function.
+
+[build]
+  publish = "."
+  functions = "netlify/functions"
+
+# Let the frontend call /api/chat while the function lives at
+# /.netlify/functions/chat.
+[[redirects]]
+  from = "/api/chat"
+  to = "/.netlify/functions/chat"
+  status = 200
